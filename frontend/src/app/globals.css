@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fdfdfd;
+}
+
+@theme {
+  /* Clear default Tailwind colors (optional - only if you want just your colors) */
+  /* --color-*: initial; */
+
+  /* Background Colors */
+  --color-background: var(--background);
+  --color-background-gray: #F5F5F5;
+  --color-background-darker: #FAFAFA;
+
+  /* Text Colors */
+  --color-text: #000000;
+  --color-text-secondary: #757575;
+  --color-text-disabled: #BDBDBD;
+
+  /* Primary Color Scale (Green #58B368) */
+  --color-primary-50: #F0F9F2;
+  --color-primary-100: #E8F5E9;
+  --color-primary-200: #C8E6C9;
+  --color-primary-300: #A5D6A7;
+  --color-primary-400: #81C784;
+  --color-primary-500: #58B368;
+  --color-primary-600: #469554;
+  --color-primary-700: #357A40;
+  --color-primary-800: #1B5E20;
+  --color-primary-900: #0D4019;
+  --color-primary: #58B368;
+
+  /* Secondary Color (Black) */
+  --color-secondary: #000000;
+  --color-secondary-light: #212121;
+  --color-secondary-lighter: #424242;
+
+  /* Accent Color (Light backgrounds) */
+  --color-accent: #E8F5E9;
+
+  /* Border Colors */
+  --color-border: #E0E0E0;
+  --color-border-light: #F5F5F5;
+  --color-border-dark: #BDBDBD;
+
+  /* Utility Colors */
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+
+  /* Success/Error/Warning (optional for future) */
+  --color-success: #58B368;
+  --color-error: #EF4444;
+  --color-warning: #F59E0B;
+  --color-info: #3B82F6;
+}
+
+body {
+  background: var(--background);
+  color: var(--color-text);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Custom Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(-20px) rotate(10deg);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-slow {
+
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes ping-slow {
+  0% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Utility Classes */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+.animate-ping-slow {
+  animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
