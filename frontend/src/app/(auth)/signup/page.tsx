@@ -95,25 +95,7 @@ export default function SignupPage() {
                         </div>
 
                         {/* Clerk Sign Up Component */}
-                        <div className="flex justify-center">
-                            <SignUp
-                                appearance={{
-                                    elements: {
-                                        rootBox: 'w-full',
-                                        card: 'bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl',
-                                        headerTitle: 'text-white',
-                                        headerSubtitle: 'text-white/70',
-                                        socialButtonsBlockButton: 'bg-white/10 border-white/20 text-white hover:bg-white/20',
-                                        formButtonPrimary: 'bg-primary hover:bg-primary-600',
-                                        footerActionLink: 'text-primary hover:text-primary-400',
-                                        formFieldLabel: 'text-white',
-                                        formFieldInput: 'bg-white/10 border-white/20 text-white',
-                                        identityPreviewText: 'text-white',
-                                        identityPreviewEditButton: 'text-primary',
-                                    },
-                                }}
-                            />
-                        </div>
+                        
 
                         {/* Login Link */}
                         <p className="text-center mt-6 text-white/70">
