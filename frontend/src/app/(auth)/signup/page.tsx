@@ -21,15 +21,19 @@ export default function SignupPage() {
                 <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse-slow" />
             </div>
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 py-8">
-                {/* Back to Home */}
+            {/* Back to Home - fixed top-left */}
+            <div className="absolute top-6 left-6 z-20">
                 <Link
                     href="/"
-                    className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-8 transition-colors"
+                    className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors"
                 >
                     <ArrowLeft className="w-4 h-4" />
                     Back to Home
                 </Link>
+            </div>
+
+            <div className="relative z-10 max-w-7xl mx-auto px-4 py-8">
+                
 
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
                     {/* Left Side - Benefits */}
