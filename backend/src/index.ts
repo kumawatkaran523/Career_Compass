@@ -1,29 +1,36 @@
 import express from "express";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 import cors from "cors";
-import { PrismaClient } from "./generated/prisma";
-const prisma = new PrismaClient(); 
-dotenv.config();
-const app = express();
-app.use(cors())
+import userRoutes from "./routes/user.routes";
+import roadmapRoutes from "./routes/roadmap.routes";
+import { errorHandler } from "./middleware/error.middleware";
 
-app.post("/", async (req, res) => {
-  try {
-    const user = await prisma.user.create({
-      data: {
-        fname: req.body.fname,
-        email: req.body.email,
-      },
-    });
-    res.json(user);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Something went wrong" });
-  }
+dotenv.config();
+
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.use("/api/users", userRoutes);
+app.use("/api/roadmap", roadmapRoutes);
+
+// Health check
+app.get("/health", (req, res) => {
+  res.json({ 
+    status: "ok", 
+    timestamp: new Date().toISOString(),
+    service: "Career Path API"
+  });
 });
+
+// Error handling 
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-  console.log(PORT);
-  console.log(`Server is running at http://localhost:${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Health check: http://localhost:${PORT}/health`);
 });

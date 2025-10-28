@@ -8,8 +8,3 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  id    String @id @default(ulid())
-  fname  String
-  email String @unique
-}

@@ -35,7 +35,7 @@ export default async function DashboardPage() {
             title: 'Career Roadmaps',
             description: 'Explore personalized career paths based on your goals',
             icon: TrendingUp,
-            href: '/dashboard/career-paths',
+            href: '/dashboard/careerPaths',
             color: 'from-blue-500/20 to-blue-500/5',
             borderColor: 'border-blue-500/30',
             iconColor: 'text-blue-400 bg-blue-400/10',
