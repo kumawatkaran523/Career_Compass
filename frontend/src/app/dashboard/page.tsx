@@ -46,10 +46,10 @@ export default async function DashboardPage() {
         <div className="space-y-8">
             {/* Welcome Section */}
             <div>
-                <h1 className="text-3xl font-bold mb-2">
-                    Welcome back, <span className="text-primary">{user?.firstName || 'there'}</span>!
-                </h1>
-                <p className="text-white/60 text-lg">
+                {/* <h1 className="text-3xl font-bold mb-2"> */}
+                    {/* Welcome back, <span className="text-primary">{user?.firstName || 'there'}</span>! */}
+                {/* </h1> */}
+                <p className="text-white/60 text-xl font-bold">
                     Track your progress and continue your career journey
                 </p>
             </div>
