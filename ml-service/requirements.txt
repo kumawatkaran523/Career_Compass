@@ -1,0 +1,21 @@
+# Core FastAPI
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Document Parsing (lightweight)
+pymupdf==1.23.8
+docx2txt==0.8
+
+# NLP - spaCy (CPU only)
+spacy==3.7.2
+
+# Sentence Transformers (will use CPU PyTorch we installed)
+sentence-transformers==2.2.2
+
+# gemini (generative ai)
+google-genai==0.3.0
+
+# Utils
+python-dotenv==1.0.0
+pydantic==2.5.0
