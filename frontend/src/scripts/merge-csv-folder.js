@@ -21,7 +21,19 @@ function parseCSV(content) {
       let current = "";
       let inQuotes = false;
 
-      
+      // Handle quoted CSV values
+      for (let char of line) {
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === "," && !inQuotes) {
+          values.push(current.trim().replace(/"/g, ""));
+          current = "";
+        } else {
+          current += char;
+        }
+      }
+      values.push(current.trim().replace(/"/g, ""));
+
       // Create object
       const obj = {};
       headers.forEach((header, i) => {
