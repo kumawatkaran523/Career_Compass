@@ -8,3 +8,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String     @id @default(cuid())
+  clerkId   String     @unique
+  email     String     @unique
+  firstName String?
+  lastName  String?
+  imageUrl  String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  roadmaps  Roadmap[]
+  progress  Progress[]
+
+  @@index([clerkId])
+  @@index([email])
+}
+
+model Roadmap {
+  id             String     @id @default(cuid())
+  userId         String
+  technology     String
+  duration       String
+  difficulty     String
+  totalWeeks     Int
+  estimatedHours Int
+  content        Json
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  progress       Progress[]
+
+  @@index([userId])
+  @@index([technology, duration, difficulty])
+}
+
+model Progress {
+  id          String   @id @default(cuid())
+  userId      String
+  roadmapId   String
+  topicId     String
+  completed   Boolean  @default(false)
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roadmap     Roadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roadmapId, topicId])
+  @@index([userId])
+  @@index([roadmapId])
+}

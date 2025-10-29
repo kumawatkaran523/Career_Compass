@@ -2,6 +2,7 @@ export interface RoadmapRequest {
   technology: string;
   duration: string;
   difficulty: string;
+  userId?: string;
 }
 
 export interface Topic {
@@ -27,6 +28,21 @@ export interface Roadmap {
   totalWeeks: number;
   estimatedHours: number;
   weeks: Week[];
+}
+
+export interface SaveRoadmapRequest {
+  userId: string;
+  technology: string;
+  duration: string;
+  difficulty: string;
+  roadmapData: Roadmap;
+}
+
+export interface ProgressUpdate {
+  userId: string;
+  roadmapId: string;
+  topicId: string;
+  completed: boolean;
 }
 
 export const DURATION_TO_WEEKS: Record<string, number> = {

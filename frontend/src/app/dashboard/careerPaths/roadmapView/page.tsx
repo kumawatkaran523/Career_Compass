@@ -10,43 +10,79 @@ export default function RoadmapViewPage() {
     const [expandedWeeks, setExpandedWeeks] = useState<number[]>([0]);
     const [completedItems, setCompletedItems] = useState<Set<string>>(new Set());
     const [loading, setLoading] = useState(true);
+    const [dbUserId, setDbUserId] = useState<string | null>(null);
+    const [roadmapId, setRoadmapId] = useState<string | null>(null);
 
     useEffect(() => {
-        console.log('🔍 Loading roadmap from localStorage...');
-        
-        // Load the AI-generated roadmap from localStorage
-        const generatedRoadmap = localStorage.getItem('generatedRoadmap');
-        
-        if (generatedRoadmap) {
-            try {
-                const parsed = JSON.parse(generatedRoadmap);
-                console.log('Roadmap loaded:', parsed);
-                console.log('Total weeks:', parsed.totalWeeks);
-                console.log('Weeks array length:', parsed.weeks?.length);
-                setRoadmapData(parsed);
-            } catch (error) {
-                console.error('Failed to parse roadmap:', error);
-                alert('Failed to load roadmap. Redirecting back...');
+        const loadData = async () => {
+            console.log('Loading roadmap from localStorage...');
+            
+            const generatedRoadmap = localStorage.getItem('generatedRoadmap');
+            const userId = localStorage.getItem('dbUserId');
+            
+            if (generatedRoadmap) {
+                try {
+                    const parsed = JSON.parse(generatedRoadmap);
+                    console.log('Roadmap loaded:', parsed);
+                    setRoadmapData(parsed);
+                    setDbUserId(userId);
+                    
+                    if (parsed.roadmapId) {
+                        setRoadmapId(parsed.roadmapId);
+                        
+                        if (userId) {
+                            await loadProgressFromDatabase(userId, parsed.roadmapId);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Failed to parse roadmap:', error);
+                    alert('Failed to load roadmap. Redirecting back...');
+                    router.push('/dashboard/careerPaths');
+                }
+            } else {
+                console.error('No roadmap found in localStorage');
+                alert('No roadmap found. Please generate one first.');
                 router.push('/dashboard/careerPaths');
             }
-        } else {
-            console.error('No roadmap found in localStorage');
-            alert('No roadmap found. Please generate one first.');
-            router.push('/dashboard/careerPaths');
-        }
-        
-        // Load saved progress
-        const savedProgress = localStorage.getItem('completedItems');
-        if (savedProgress) {
-            try {
-                setCompletedItems(new Set(JSON.parse(savedProgress)));
-            } catch (error) {
-                console.error('Failed to load progress:', error);
+            
+            const savedProgress = localStorage.getItem('completedItems');
+            if (savedProgress) {
+                try {
+                    setCompletedItems(new Set(JSON.parse(savedProgress)));
+                } catch (error) {
+                    console.error('Failed to load progress:', error);
+                }
             }
-        }
 
-        setLoading(false);
+            setLoading(false);
+        };
+
+        loadData();
     }, [router]);
+
+    const loadProgressFromDatabase = async (userId: string, roadmapId: string) => {
+        try {
+            const response = await fetch(
+                `http://localhost:5000/api/roadmap/progress/${userId}/${roadmapId}`
+            );
+
+            if (response.ok) {
+                const result = await response.json();
+                const progressArray = result.data.progress;
+                
+                const completedTopicIds = progressArray
+                    .filter((p: any) => p.completed)
+                    .map((p: any) => p.topicId);
+
+                setCompletedItems(new Set(completedTopicIds));
+                localStorage.setItem('completedItems', JSON.stringify(completedTopicIds));
+                
+                console.log('Progress loaded from database:', completedTopicIds.length, 'topics completed');
+            }
+        } catch (error) {
+            console.error('Failed to load progress from database:', error);
+        }
+    };
 
     const toggleWeek = (weekNumber: number) => {
         setExpandedWeeks(prev =>
@@ -56,15 +92,43 @@ export default function RoadmapViewPage() {
         );
     };
 
-    const toggleComplete = (topicId: string) => {
+    const toggleComplete = async (topicId: string) => {
         const newCompleted = new Set(completedItems);
-        if (newCompleted.has(topicId)) {
-            newCompleted.delete(topicId);
-        } else {
+        const isCompleting = !newCompleted.has(topicId);
+        
+        if (isCompleting) {
             newCompleted.add(topicId);
+        } else {
+            newCompleted.delete(topicId);
         }
+        
         setCompletedItems(newCompleted);
         localStorage.setItem('completedItems', JSON.stringify([...newCompleted]));
+
+        if (dbUserId && roadmapId) {
+            try {
+                const response = await fetch('http://localhost:5000/api/roadmap/progress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: dbUserId,
+                        roadmapId: roadmapId,
+                        topicId: topicId,
+                        completed: isCompleting,
+                    }),
+                });
+
+                if (response.ok) {
+                    console.log('Progress synced to database:', topicId, isCompleting);
+                } else {
+                    console.error('Failed to sync progress to database');
+                }
+            } catch (error) {
+                console.error('Error syncing progress:', error);
+            }
+        }
     };
 
     const getTypeIcon = (type: string) => {
@@ -87,28 +151,12 @@ export default function RoadmapViewPage() {
         }
     };
 
-    if (loading) {
+    if (loading || !roadmapData) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                     <p className="text-white/60">Loading your roadmap...</p>
-                </div>
-            </div>
-        );
-    }
-
-    if (!roadmapData) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                    <p className="text-white/60 mb-4">No roadmap found</p>
-                    <button
-                        onClick={() => router.push('/dashboard/careerPaths')}
-                        className="px-6 py-3 bg-primary rounded-xl hover:bg-primary-600 transition-colors"
-                    >
-                        Generate New Roadmap
-                    </button>
                 </div>
             </div>
         );
@@ -120,7 +168,6 @@ export default function RoadmapViewPage() {
 
     return (
         <div className="min-h-screen pb-12">
-            {/* Header */}
             <div className="mb-8">
                 <button
                     onClick={() => router.push('/dashboard/careerPaths')}
@@ -145,9 +192,7 @@ export default function RoadmapViewPage() {
             </div>
 
             <div className="grid lg:grid-cols-[1fr_350px] gap-8">
-                {/* Main Content */}
                 <div className="space-y-6">
-                    {/* Overall Progress */}
                     <div className="bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 border border-primary/30 rounded-2xl p-8">
                         <div className="flex items-center justify-between mb-6">
                             <div>
@@ -167,7 +212,6 @@ export default function RoadmapViewPage() {
                         </div>
                     </div>
 
-                    {/* Weekly Breakdown */}
                     <div className="space-y-4">
                         {roadmapData.weeks.map((week: any, idx: number) => {
                             const isExpanded = expandedWeeks.includes(idx);
@@ -293,7 +337,6 @@ export default function RoadmapViewPage() {
                     </div>
                 </div>
 
-                {/* Sidebar */}
                 <div className="space-y-6">
                     <div className="bg-gradient-to-br from-white/[0.07] to-white/[0.03] border border-white/10 rounded-2xl p-6 sticky top-24">
                         <h3 className="font-bold text-lg mb-5 flex items-center gap-2">
