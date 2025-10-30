@@ -22,7 +22,7 @@ export default function Sidebar() {
     const navigation = [
         { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
         { name: 'Problems', href: '/dashboard/problems', icon: Code2 },
-        { name: 'Resume Analysis', href: '/dashboard/resume', icon: Upload },
+        { name: 'Resume Analysis', href: '/dashboard/resume-analyze', icon: Upload },
     { name: 'Career Paths', href: '/dashboard/careerPaths', icon: TrendingUp },
         { name: 'Assessments', href: '/dashboard/assessments', icon: ClipboardCheck },
         { name: 'Profile', href: '/dashboard/profile', icon: User },
