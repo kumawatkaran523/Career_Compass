@@ -1,70 +1,63 @@
-career-platform/
-├── frontend/                          # Next.js App
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── (auth)/
-│   │   │   │   ├── sign-in/
-│   │   │   │   │   └── [[...sign-in]]/page.tsx
-│   │   │   │   └── sign-up/
-│   │   │   │       └── [[...sign-up]]/page.tsx
-│   │   │   ├── (dashboard)/          # Authenticated area
-│   │   │   │   ├── dashboard/page.tsx
-│   │   │   │   ├── resume/page.tsx
-│   │   │   │   ├── recommendations/page.tsx
-│   │   │   │   ├── assessments/page.tsx
-│   │   │   │   └── upskilling/page.tsx
-│   │   │   ├── api/webhooks/clerk/route.ts  # Clerk webhook endpoint
+career_coach/
+│
+├── frontend/                      # Next.js 15 Application
+│   ├── app/
+│   │   ├── (auth)/
+│   │   │   ├── sign-in/
+│   │   │   └── sign-up/
+│   │   ├── components/
+│   │   │   ├── UserSync.tsx       # User synchronization component
+│   │   │   └── Navbar.tsx         # Navigation component
+│   │   ├── dashboard/
 │   │   │   ├── layout.tsx
-│   │   │   ├── page.tsx
-│   │   │   └── globals.css
-│   │   ├── components/               # UI + layout
-│   │   │   ├── ui/                   # shadcn/ui components
-│   │   │   ├── layout/               # Navbar, Sidebar
-│   │   │   └── dashboard/            # Stats cards, widgets
-│   │   ├── lib/
-│   │   │   ├── prisma.ts              # Prisma client
-│   │   │   ├── redis.ts               # Redis client
-│   │   │   └── utils.ts
-│   │   └── types/
-│   │       └── index.ts
-│   ├── prisma/
-│   │   ├── schema.prisma
-│   │   └── migrations/
+│   │   │   ├── page.tsx           # Dashboard home
+│   │   │   ├── careerPaths/
+│   │   │   │   ├── page.tsx       # Roadmap generator
+│   │   │   │   └── roadmapView/
+│   │   │   │       └── [id]/
+│   │   │   │           └── page.tsx
+│   │   │   └── resume-analyze/
+│   │   │       ├── page.tsx       # Upload interface
+│   │   │       └── results/
+│   │   │           └── page.tsx   # Analysis results
+│   │   ├── layout.tsx             # Root layout
+│   │   └── page.tsx               # Landing page
 │   ├── public/
-│   │   └── images/
 │   ├── .env.local
-│   ├── middleware.ts                  # Clerk middleware
 │   ├── next.config.js
-│   ├── tailwind.config.js
-│   ├── tsconfig.json
+│   ├── tailwind.config.ts
 │   └── package.json
 │
-└── backend/                           # Node.js API + Python NLP
-    ├── api/                           # Express backend
-    │   ├── routes/
-    │   │   ├── user.js
-    │   │   ├── quiz.js
-    │   │   └── recommendation.js
-    │   ├── controllers/
-    │   │   ├── userController.js
-    │   │   ├── quizController.js
-    │   │   └── recommendationController.js
-    │   ├── services/
-    │   │   ├── nlpService.js         # Call Python FastAPI
-    │   │   └── redisService.js
-    │   ├── config/
-    │   │   ├── db.js                 # Prisma / Neon setup
-    │   │   ├── redis.js              # Redis setup
-    │   │   └── env.js
-    │   ├── index.js                  # Express entry point
-    │   ├── .env
-    │   └── package.json
-    │
-    └── nlp-service/                   # Python FastAPI NLP microservice
-        ├── main.py                    # FastAPI app
-        ├── services/
-        │   ├── resume_parser.py
-        │   └── skill_matcher.py
-        ├── models/                    # Pre-trained models
-        ├── requirements.txt
-        └── Dockerfile
+├── backend/                       # Express.js Backend
+│   ├── src/
+│   │   ├── controllers/
+│   │   │   ├── user.controller.ts
+│   │   │   ├── roadmap.controller.ts
+│   │   │   └── resumeAnalysis.controller.ts
+│   │   ├── services/
+│   │   │   ├── user.service.ts
+│   │   │   ├── roadmap.service.ts
+│   │   │   └── resumeAnalysis.service.ts
+│   │   ├── routes/
+│   │   │   ├── user.routes.ts
+│   │   │   ├── roadmap.routes.ts
+│   │   │   └── analysis.routes.ts
+│   │   ├── middleware/
+│   │   │   └── errorHandler.ts
+│   │   ├── lib/
+│   │   │   └── prisma.ts          # Prisma client
+│   │   ├── utils/
+│   │   │   └── response.util.ts
+│   │   └── index.ts               # Server entry point
+│   ├── prisma/
+│   │   ├── schema.prisma          # Database schema
+│   │   └── migrations/
+│   ├── .env
+│   └── package.json
+│
+└── ml_service/                    # FastAPI ML Service
+    ├── main.py                    # FastAPI app
+    ├── requirements.txt           # Python dependencies
+    ├── .env
+    └── models/                    # Downloaded pre-trained models
+        └── en_core_web_sm/
