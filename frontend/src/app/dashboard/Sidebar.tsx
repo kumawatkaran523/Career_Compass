@@ -11,7 +11,8 @@ import {
     ClipboardCheck,
     User,
     Settings,
-    LogOut
+    LogOut,
+    Building2
 } from 'lucide-react';
 import { useClerk } from '@clerk/nextjs';
 
@@ -23,7 +24,8 @@ export default function Sidebar() {
         { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
         { name: 'Problems', href: '/dashboard/problems', icon: Code2 },
         { name: 'Resume Analysis', href: '/dashboard/resume-analyze', icon: Upload },
-    { name: 'Career Paths', href: '/dashboard/careerPaths', icon: TrendingUp },
+        { name: 'Career Paths', href: '/dashboard/careerPaths', icon: TrendingUp },
+        { name: 'Placement Insights', href: '/dashboard/companies', icon: Building2 },
         { name: 'Assessments', href: '/dashboard/assessments', icon: ClipboardCheck },
         { name: 'Profile', href: '/dashboard/profile', icon: User },
     ];
