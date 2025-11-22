@@ -1,5 +1,5 @@
 import { currentUser } from '@clerk/nextjs/server';
-import { Upload, TrendingUp, ClipboardCheck, Target, Award, BookOpen, Code, ArrowRight } from 'lucide-react';
+import { Upload, TrendingUp, ClipboardCheck, Target, Award, BookOpen, Code, ArrowRight, ListChecks } from 'lucide-react';
 import Link from 'next/link';
 
 export default async function DashboardPage() {
@@ -40,6 +40,15 @@ export default async function DashboardPage() {
             borderColor: 'border-blue-500/30',
             iconColor: 'text-blue-400 bg-blue-400/10',
         },
+        {
+            title: 'Interview Questions',
+            description: 'See and contribute latest placement, DSA, and HR round questions for every company',
+            icon: ListChecks,
+            href: '/dashboard/interview-questions',
+            color: 'from-yellow-500/20 to-yellow-500/5',
+            borderColor: 'border-yellow-500/30',
+            iconColor: 'text-yellow-400 bg-yellow-400/10',
+        }
     ];
 
     return (
@@ -73,7 +82,7 @@ export default async function DashboardPage() {
             {/* Quick Actions */}
             <div>
                 <h2 className="text-2xl font-bold mb-6">Quick Actions</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                     {quickActions.map((action, idx) => (
                         <Link
                             key={idx}

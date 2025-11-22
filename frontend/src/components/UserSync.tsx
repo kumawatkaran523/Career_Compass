@@ -9,10 +9,10 @@ export default function UserSync() {
     // Debug logging
     useEffect(() => {
         if (dbUserId) {
-            console.log('🎯 DB User ID available:', dbUserId);
+            console.log('DB User ID available:', dbUserId);
         }
         if (error) {
-            console.error('⚠️ User sync error:', error);
+            console.error('User sync error:', error);
         }
     }, [dbUserId, error]);
 
