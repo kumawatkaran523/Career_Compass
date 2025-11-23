@@ -1,7 +1,7 @@
 // app/dashboard/companies/page.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Search, Building2, TrendingUp, Users, MapPin, ExternalLink, GraduationCap, X } from 'lucide-react';
 import Link from 'next/link';
 
@@ -94,7 +94,26 @@ export default function CompaniesPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedIndustry, setSelectedIndustry] = useState<string>('all');
     const [selectedColleges, setSelectedColleges] = useState<string[]>(['jklu']);
+    const [industryOpen, setIndustryOpen] = useState(false);
+    const industryDropdownRef = useRef<HTMLDivElement>(null);
     const userCollege = 'jklu'; // TODO: Get from user context/auth
+
+    // Click-outside detection for industry dropdown
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (industryDropdownRef.current && !industryDropdownRef.current.contains(event.target as Node)) {
+                setIndustryOpen(false);
+            }
+        }
+
+        if (industryOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [industryOpen]);
 
     // Filter companies
     const filteredCompanies = mockCompanies.filter(company => {
@@ -127,14 +146,34 @@ export default function CompaniesPage() {
         setSelectedColleges([userCollege]);
     };
 
+    const industries = [
+        { id: "all", label: "All Industries" },
+        { id: "IT Services", label: "IT Services" },
+        { id: "Technology", label: "Technology" },
+        { id: "Consulting", label: "Consulting" },
+        { id: "Finance", label: "Finance" },
+    ];
+
     return (
         <div className="space-y-8">
             {/* Header */}
-            <div>
-                <h1 className="text-3xl font-bold mb-2">Interview Experiences</h1>
-                <p className="text-white/60">
-                    Explore company placements, interview experiences, and insights from students at your college
-                </p>
+            <div className="mb-8">
+                <div className="flex items-start md:items-center justify-between flex-col md:flex-row gap-4 mb-6">
+                    <div>
+                        <h1 className="text-3xl font-bold mb-2">Interview Experiences</h1>
+                        <p className="text-white/60">
+                            Explore company placements, interview experiences, and insights from students at your college
+                        </p>
+                    </div>
+                    
+                    <Link 
+                        href="/dashboard/companies/add-company"
+                        className="px-6 py-3 bg-primary hover:bg-primary-600 rounded-lg font-medium transition-all shadow-lg shadow-primary/20 flex items-center gap-2 whitespace-nowrap"
+                    >
+                        <Building2 className="w-5 h-5" />
+                        Add Company
+                    </Link>
+                </div>
             </div>
 
             {/* Search and Filters */}
@@ -152,18 +191,36 @@ export default function CompaniesPage() {
                         />
                     </div>
 
-                    {/* Industry Filter */}
-                    <select
-                        value={selectedIndustry}
-                        onChange={(e) => setSelectedIndustry(e.target.value)}
-                        className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-primary/50 transition-all min-w-[180px]"
-                    >
-                        <option value="all">All Industries</option>
-                        <option value="IT Services">IT Services</option>
-                        <option value="Technology">Technology</option>
-                        <option value="Finance">Finance</option>
-                        <option value="Consulting">Consulting</option>
-                    </select>
+                    {/* Industry Filter - Custom Dropdown with Click-Outside Detection */}
+                    <div className="relative" ref={industryDropdownRef}>
+                        <button
+                            onClick={() => setIndustryOpen(!industryOpen)}
+                            className="px-4 py-3 min-w-[180px] bg-[#0a0a0a] border border-white/10 rounded-xl text-white flex items-center justify-between focus:outline-none focus:ring-0 transition-all hover:border-primary/50"
+                        >
+                            {selectedIndustry === "all" ? "All Industries" : selectedIndustry}
+
+                            <svg className="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        {industryOpen && (
+                            <div className="absolute top-full left-0 w-full mt-2 z-50 bg-[#0e0e0e] border border-white/10 rounded-xl shadow-xl overflow-hidden">
+                                {industries.map((item) => (
+                                    <button
+                                        key={item.id}
+                                        onClick={() => {
+                                            setSelectedIndustry(item.id);
+                                            setIndustryOpen(false);
+                                        }}
+                                        className="w-full text-left px-4 py-3 text-white hover:bg-[#1a1a1a] transition-colors"
+                                    >
+                                        {item.label}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
 
                     {/* College Filter Dropdown */}
                     <div className="relative group">
