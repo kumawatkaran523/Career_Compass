@@ -1,3 +1,4 @@
+// app/signup/page.tsx
 'use client';
 
 import { SignUp } from '@clerk/nextjs';
@@ -15,13 +16,11 @@ export default function SignupPage() {
 
     return (
         <div className="min-h-screen bg-black text-white">
-            {/* Background Effects */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse-slow" />
                 <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse-slow" />
             </div>
 
-            {/* Back to Home - fixed top-left */}
             <div className="absolute top-6 left-6 z-20">
                 <Link
                     href="/"
@@ -33,8 +32,6 @@ export default function SignupPage() {
             </div>
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 py-8">
-                
-
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
                     {/* Left Side - Benefits */}
                     <div className="hidden lg:block">
@@ -53,7 +50,6 @@ export default function SignupPage() {
                             Join thousands of learners transforming their careers with AI-powered guidance
                         </p>
 
-                        {/* Benefits List */}
                         <div className="space-y-4">
                             {benefits.map((benefit, idx) => (
                                 <div key={idx} className="flex items-center gap-3">
@@ -65,7 +61,6 @@ export default function SignupPage() {
                             ))}
                         </div>
 
-                        {/* Stats */}
                         <div className="grid grid-cols-3 gap-4 mt-12 pt-8 border-t border-white/10">
                             <div>
                                 <p className="text-3xl font-bold text-primary">10k+</p>
@@ -84,17 +79,11 @@ export default function SignupPage() {
 
                     {/* Right Side - Sign Up Form */}
                     <div>
-                        <div className="text-center lg:text-left mb-8 lg:hidden">
-                            <h1 className="text-3xl font-bold mb-2">Create Your Account</h1>
-                            <p className="text-white/70">Get started with personalized career guidance</p>
-                        </div>
-
                         <div className="hidden lg:block text-center mb-8">
                             <h2 className="text-2xl font-bold mb-2">Create Your Account</h2>
                             <p className="text-white/70">Get started in less than 2 minutes</p>
                         </div>
 
-                        {/* Clerk Sign Up Component */}
                         <div className="flex justify-center">
                             <SignUp
                                 appearance={{
@@ -115,7 +104,6 @@ export default function SignupPage() {
                             />
                         </div>
 
-                        {/* Login Link */}
                         <p className="text-center mt-6 text-white/70">
                             Already have an account?{' '}
                             <Link href="/login" className="text-primary hover:text-primary-400 font-medium">
