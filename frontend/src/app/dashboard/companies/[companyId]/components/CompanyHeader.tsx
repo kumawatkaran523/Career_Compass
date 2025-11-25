@@ -1,68 +1,89 @@
-// app/dashboard/companies/[companyId]/components/CompanyHeader.tsx
+// components/CompanyHeader.tsx
+'use client';
+
 import Link from 'next/link';
-import { MapPin, Users, Globe, ArrowRight, ExternalLink } from 'lucide-react';
-import { Company } from '../types';
+import { Building2, MapPin, Users, Globe, Plus } from 'lucide-react';
+
+interface Company {
+    id: string;
+    name: string;
+    logo: string | null;
+    website: string | null;
+    industry: string;
+    description: string | null;
+    headquarters: string | null;
+    employeeCount: string | null;
+}
 
 interface CompanyHeaderProps {
     company: Company;
+    companyId: string;
 }
 
-export default function CompanyHeader({ company }: CompanyHeaderProps) {
+export default function CompanyHeader({ company, companyId }: CompanyHeaderProps) {
     return (
-        <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-            <div className="flex items-start gap-6">
-                {/* Company Logo */}
-                <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0">
-                    <img
-                        src={company.logo}
-                        alt={company.name}
-                        className="w-full h-full object-contain p-2"
-                    />
-                </div>
-
-                {/* Company Info - Compact */}
-                <div className="flex-1">
-                    <div className="flex items-start justify-between mb-3">
-                        <div>
-                            <h1 className="text-2xl font-bold mb-1">{company.name}</h1>
-                            <p className="text-white/60 text-sm">{company.industry}</p>
-                        </div>
-                        <Link
-                            href={`/dashboard/companies/${company.id}/add-experience`}
-                            className="px-5 py-2.5 bg-primary hover:bg-primary-600 rounded-lg font-medium transition-all shadow-lg shadow-primary/20 flex items-center gap-2 text-sm"
-                        >
-                            Share Experience
-                            <ArrowRight className="w-4 h-4" />
-                        </Link>
+        <div className="bg-white/5 border border-white/10 rounded-xl p-8">
+            <div className="flex items-start justify-between gap-6 flex-wrap">
+                <div className="flex items-start gap-6 flex-1 min-w-0">
+                    {/* Company Logo */}
+                    <div className="w-24 h-24 bg-white rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0">
+                        {company.logo ? (
+                            <img
+                                src={company.logo}
+                                alt={company.name}
+                                className="w-full h-full object-contain p-3"
+                            />
+                        ) : (
+                            <Building2 className="w-12 h-12 text-gray-400" />
+                        )}
                     </div>
 
-                    {/* Meta Info - Inline */}
-                    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/70">
-                        <div className="flex items-center gap-1.5">
-                            <MapPin className="w-3.5 h-3.5 text-white/40" />
-                            {company.headquarters}
+                    {/* Company Info */}
+                    <div className="flex-1 min-w-0">
+                        <h1 className="text-3xl font-bold mb-2">{company.name}</h1>
+                        <div className="flex items-center gap-4 text-white/60 mb-4 flex-wrap">
+                            {company.headquarters && (
+                                <div className="flex items-center gap-2">
+                                    <MapPin className="w-4 h-4" />
+                                    <span>{company.headquarters}</span>
+                                </div>
+                            )}
+                            {company.employeeCount && (
+                                <div className="flex items-center gap-2">
+                                    <Users className="w-4 h-4" />
+                                    <span>{company.employeeCount}</span>
+                                </div>
+                            )}
+                            <div className="flex items-center gap-2">
+                                <Building2 className="w-4 h-4" />
+                                <span>{company.industry}</span>
+                            </div>
+                            {company.website && (
+                                <a
+                                    href={company.website}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2 hover:text-primary transition-colors"
+                                >
+                                    <Globe className="w-4 h-4" />
+                                    <span>Website</span>
+                                </a>
+                            )}
                         </div>
-                        <div className="flex items-center gap-1.5">
-                            <Users className="w-3.5 h-3.5 text-white/40" />
-                            {company.employeeCount}
-                        </div>
-                        <a
-                            href={company.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 text-primary hover:underline"
-                        >
-                            <Globe className="w-3.5 h-3.5" />
-                            Visit Website
-                            <ExternalLink className="w-3 h-3" />
-                        </a>
+                        {company.description && (
+                            <p className="text-white/70 line-clamp-2">{company.description}</p>
+                        )}
                     </div>
-
-                    {/* About - Inline, Truncated */}
-                    <p className="text-white/60 text-sm mt-3 line-clamp-2 leading-relaxed">
-                        {company.description}
-                    </p>
                 </div>
+
+                {/* Add Experience Button */}
+                <Link
+                    href={`/dashboard/companies/${companyId}/add-experience`}
+                    className="px-6 py-3 bg-primary hover:bg-primary-600 rounded-lg font-medium transition-all shadow-lg shadow-primary/20 flex items-center gap-2 whitespace-nowrap"
+                >
+                    <Plus className="w-5 h-5" />
+                    Add Experience
+                </Link>
             </div>
         </div>
     );
