@@ -1,3 +1,4 @@
+// backend/src/services/user.service.ts
 import prisma from "../lib/prisma";
 
 interface ClerkUserData {
@@ -6,6 +7,8 @@ interface ClerkUserData {
   firstName?: string;
   lastName?: string;
   imageUrl?: string;
+  collegeId?: string;
+  graduationYear?: number;
 }
 
 class UserService {
@@ -17,6 +20,8 @@ class UserService {
         firstName: userData.firstName,
         lastName: userData.lastName,
         imageUrl: userData.imageUrl,
+        collegeId: userData.collegeId,
+        graduationYear: userData.graduationYear,
       },
       create: {
         clerkId: userData.clerkId,
@@ -24,53 +29,51 @@ class UserService {
         firstName: userData.firstName,
         lastName: userData.lastName,
         imageUrl: userData.imageUrl,
+        collegeId: userData.collegeId,
+        graduationYear: userData.graduationYear,
+      },
+      include: {
+        college: true,
       },
     });
 
-    console.log("User synced:", user.id);
     return user;
   }
 
   async getUserByClerkId(clerkId: string) {
-    const user = await prisma.user.findUnique({
+    return await prisma.user.findUnique({
       where: { clerkId },
       include: {
+        college: true,
         roadmaps: {
-          orderBy: { createdAt: 'desc' },
+          orderBy: { createdAt: "desc" },
           take: 10,
         },
       },
     });
-
-    return user;
   }
 
   async getUserByEmail(email: string) {
-    const user = await prisma.user.findUnique({
+    return await prisma.user.findUnique({
       where: { email },
+      include: { college: true },
     });
-
-    return user;
   }
 
   async deleteUser(clerkId: string) {
-    const deleted = await prisma.user.delete({
+    return await prisma.user.delete({
       where: { clerkId },
     });
-
-    console.log("User deleted:", deleted.id);
-    return deleted;
   }
 
   async getAllUsers() {
-    const users = await prisma.user.findMany({
-      orderBy: { createdAt: 'desc' },
+    return await prisma.user.findMany({
+      orderBy: { createdAt: "desc" },
       include: {
+        college: true,
         roadmaps: true,
       },
     });
-
-    return users;
   }
 }
 
