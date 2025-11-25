@@ -1,3 +1,4 @@
+// backend/src/controllers/user.controller.ts
 import { Request, Response, NextFunction } from "express";
 import userService from "../services/user.service";
 import { sendSuccess, sendError } from "../utils/response.util";
@@ -8,7 +9,15 @@ export const syncUser = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { clerkId, email, firstName, lastName, imageUrl } = req.body;
+    const {
+      clerkId,
+      email,
+      firstName,
+      lastName,
+      imageUrl,
+      collegeId,
+      graduationYear,
+    } = req.body;
 
     if (!clerkId || !email) {
       sendError(res, "clerkId and email are required", 400);
@@ -21,6 +30,8 @@ export const syncUser = async (
       firstName,
       lastName,
       imageUrl,
+      collegeId,
+      graduationYear,
     });
 
     sendSuccess(res, user, "User synced successfully", 201);
