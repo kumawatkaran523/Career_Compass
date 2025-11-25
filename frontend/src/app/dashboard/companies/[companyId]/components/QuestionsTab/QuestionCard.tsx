@@ -110,7 +110,7 @@ export default function QuestionCard({ question, userDbId }: QuestionCardProps) 
                         <p className="font-medium text-white leading-relaxed flex-1">
                             {question.questionText}
                         </p>
-                        {!question.questionLink && (
+                        {question.questionLink && (
                             <a
                                 href={question.questionLink}
                                 target="_blank"
