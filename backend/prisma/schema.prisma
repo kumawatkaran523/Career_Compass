@@ -1,3 +1,5 @@
+// prisma/schema.prisma
+
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -8,21 +10,265 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ==================== USER & COLLEGE ====================
+
 model User {
-  id        String     @id @default(cuid())
-  clerkId   String     @unique
-  email     String     @unique
-  firstName String?
-  lastName  String?
-  imageUrl  String?
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  roadmaps  Roadmap[]
-  progress  Progress[]
-  resumeAnalyses  ResumeAnalysis[] 
+  id              String   @id @default(cuid())
+  clerkId         String   @unique
+  email           String   @unique
+  firstName       String?
+  lastName        String?
+  imageUrl        String?
+  
+  // College Information
+  collegeId       String?
+  college         College? @relation(fields: [collegeId], references: [id])
+  graduationYear  Int?
+  
+  // Relations
+  roadmaps             Roadmap[]
+  progress             Progress[]
+  resumeAnalyses       ResumeAnalysis[]
+  companyExperiences   CompanyExperience[]
+  popularQuestions     PopularQuestion[]
+  experienceVotes      ExperienceVote[]
+  questionVotes        QuestionVote[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
   @@index([clerkId])
   @@index([email])
+  @@index([collegeId])
 }
+
+model College {
+  id              String   @id @default(cuid())
+  name            String   @unique
+  location        String?
+  
+  // Relations
+  users               User[]
+  companyExperiences  CompanyExperience[]
+  popularQuestions    PopularQuestion[]
+  companyVisits       CompanyVisit[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([name])
+}
+
+// ==================== COMPANY MODULE ====================
+
+model Company {
+  id                String              @id @default(cuid())
+  name              String              @unique
+  logo              String?             
+  website           String?
+  industry          String              
+  description       String?             @db.Text
+  headquarters      String?
+  employeeCount     String?             
+  
+  // Relations
+  experiences       CompanyExperience[]
+  popularQuestions  PopularQuestion[]
+  companyVisits     CompanyVisit[]
+  
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  
+  @@index([name])
+  @@index([industry])
+}
+
+// ==================== COMPANY EXPERIENCE ====================
+
+model CompanyExperience {
+  id                String              @id @default(cuid())
+  
+  // Relations
+  companyId         String
+  company           Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  
+  userId            String
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  collegeId         String
+  college           College             @relation(fields: [collegeId], references: [id])
+  
+  // Basic Info
+  role              String              
+  interviewType     InterviewType       
+  interviewDate     DateTime
+  outcome           OutcomeType         
+  
+  // Interview Rounds (JSON)
+  rounds            Json                
+  
+  // Compensation
+  salaryOffered     Float?              
+  joiningBonus      Float?              
+  otherBenefits     String?             @db.Text
+  
+  // Overall Review
+  overallDifficulty DifficultyLevel
+  overallRating     Float               
+  reviewTitle       String
+  reviewText        String              @db.Text
+  
+  // Additional Details
+  applicationProcess String?            @db.Text
+  preparationTips   String?             @db.Text
+  interviewerBehavior String?
+  
+  // Privacy
+  isAnonymous       Boolean             @default(false)
+  
+  // Engagement
+  upvotes           Int                 @default(0)
+  downvotes         Int                 @default(0)
+  votes             ExperienceVote[]
+  
+  // Admin
+  isVerified        Boolean             @default(false)
+  isApproved        Boolean             @default(true)
+  
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  
+  @@index([companyId])
+  @@index([collegeId])
+  @@index([userId])
+  @@index([interviewType, outcome])
+  @@index([interviewDate])
+  @@index([createdAt])
+}
+
+model ExperienceVote {
+  id           String            @id @default(cuid())
+  
+  userId       String
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  experienceId String
+  experience   CompanyExperience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  
+  voteType     VoteType          
+  createdAt    DateTime          @default(now())
+  
+  @@unique([userId, experienceId])
+  @@index([experienceId])
+  @@index([userId])
+}
+
+// ==================== POPULAR QUESTIONS ====================
+
+model PopularQuestion {
+  id                String              @id @default(cuid())
+  
+  // Relations
+  companyId         String
+  company           Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  
+  collegeId         String?             
+  college           College?            @relation(fields: [collegeId], references: [id])
+  
+  userId            String?             
+  user              User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  // Question Details
+  questionText      String              @db.Text
+  questionType      QuestionType
+  difficulty        DifficultyLevel
+  round             String              
+  topic             String?             
+  
+  // Solution (optional)
+  sampleAnswer      String?             @db.Text
+  approach          String?             @db.Text
+  questionLink      String?             
+  
+  // Metrics
+  askedCount        Int                 @default(1)
+  lastAskedDate     DateTime?
+  upvotes           Int                 @default(0)
+  downvotes         Int                 @default(0)
+  votes             QuestionVote[]
+  
+  // Admin
+  isVerified        Boolean             @default(false)
+  isApproved        Boolean             @default(true)
+  
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  
+  @@index([companyId, collegeId])
+  @@index([questionType, difficulty])
+  @@index([topic])
+}
+
+model QuestionVote {
+  id         String           @id @default(cuid())
+  
+  userId     String
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  questionId String
+  question   PopularQuestion  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  
+  voteType   VoteType         
+  createdAt  DateTime         @default(now())
+  
+  @@unique([userId, questionId])
+  @@index([questionId])
+  @@index([userId])
+}
+
+// ==================== COMPANY VISITS ====================
+
+model CompanyVisit {
+  id                String              @id @default(cuid())
+  
+  // Relations
+  companyId         String
+  company           Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  
+  collegeId         String
+  college           College             @relation(fields: [collegeId], references: [id])
+  
+  // Visit Details
+  visitDate         DateTime
+  academicYear      String              
+  rolesOffered      String[]            
+  ctcRange          String              
+  eligibilityCriteria Json              
+  
+  // Stats
+  totalApplied      Int?
+  totalShortlisted  Int?
+  totalSelected     Int?
+  
+  // Status
+  status            VisitStatus         
+  registrationOpen  Boolean             @default(false)
+  registrationDeadline DateTime?
+  
+  // Additional
+  jobDescription    String?             @db.Text
+  notes             String?             @db.Text
+  
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  
+  @@index([collegeId, companyId])
+  @@index([visitDate, status])
+  @@index([academicYear])
+  @@index([status])
+}
+
+// ==================== EXISTING MODELS ====================
 
 model ResumeAnalysis {
   id                    String   @id @default(cuid())
@@ -85,4 +331,45 @@ model Progress {
   @@unique([userId, roadmapId, topicId])
   @@index([userId])
   @@index([roadmapId])
+}
+
+// ==================== ENUMS ====================
+
+enum InterviewType {
+  ON_CAMPUS
+  OFF_CAMPUS
+  REFERRAL
+}
+
+enum OutcomeType {
+  SELECTED
+  REJECTED
+  WAITING
+}
+
+enum DifficultyLevel {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum QuestionType {
+  CODING
+  TECHNICAL
+  BEHAVIORAL
+  APTITUDE
+  HR
+  SYSTEM_DESIGN
+}
+
+enum VisitStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+enum VoteType {
+  UPVOTE
+  DOWNVOTE
 }
