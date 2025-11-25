@@ -4,6 +4,10 @@ import cors from "cors";
 import userRoutes from "./routes/user.routes";
 import roadmapRoutes from "./routes/roadmap.routes";
 import analysisRoutes from "./routes/resumeAnalysis.routes";
+import collegeRoutes from "./routes/college.routes"; 
+import companyRoutes from "./routes/company.routes";
+import experienceRoutes from "./routes/experience.routes";
+import questionRoutes from "./routes/question.routes";
 import { errorHandler } from "./middleware/error.middleware";
 
 dotenv.config();
@@ -18,6 +22,11 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/roadmap", roadmapRoutes);
 app.use("/api/analysis", analysisRoutes); 
+app.use("/api/colleges", collegeRoutes); 
+app.use("/api/companies", companyRoutes);
+app.use("/api/experiences", experienceRoutes);
+app.use("/api/questions", questionRoutes);
+
 // Health check
 app.get("/health", (req, res) => {
   res.json({ 
