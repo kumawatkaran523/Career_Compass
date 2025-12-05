@@ -14,61 +14,69 @@ _An AI-powered platform providing personalized career guidance through intellige
 
 <div align="center">
 
+
 ### 💡 Meet the CareerCompass Team
 
 <table>
   <tr>
-  <td align="center" width="33%">
+    <td align="center" width="25%">
       <a href="https://github.com/kumawatkaran523">
-        <img src="https://images.weserv.nl/?url=github.com/kumawatkaran523.png&h=150&w=150&fit=cover&mask=circle&maxage=7d" alt="Karan Kumawat"/>
+        <img src="https://images.weserv.nl/?url=github.com/kumawatkaran523.png&h=100&w=100&fit=cover&mask=circle&maxage=7d" alt="Karan Kumawat"/>
       </a>
       <br />
       <h3>Karan Kumawat</h3>
     </td>
-    <td align="center" width="33%">
+    <td align="center" width="25%">
       <a href="https://github.com/anunay07">
-        <img src="https://images.weserv.nl/?url=github.com/anunay07.png&h=150&w=150&fit=cover&mask=circle&maxage=7d" alt="Anunay Tiwari"/>
+        <img src="https://images.weserv.nl/?url=github.com/anunay07.png&h=100&w=100&fit=cover&mask=circle&maxage=7d" alt="Anunay Tiwari"/>
       </a>
       <br />
       <h3>Anunay Tiwari</h3>
-      <br />
     </td>
-    <td align="center" width="33%">
+    <td align="center" width="25%">
       <a href="https://github.com/rahulsyadav24">
-        <img src="https://images.weserv.nl/?url=github.com/rahulsyadav24.png&h=150&w=150&fit=cover&mask=circle&maxage=7d" alt="Rahul Yadav"/>
+        <img src="https://images.weserv.nl/?url=github.com/rahulsyadav24.png&h=100&w=100&fit=cover&mask=circle&maxage=7d" alt="Rahul Yadav"/>
       </a>
       <br />
       <h3>Rahul Yadav</h3>
     </td>
-    <td align="center" width="33%">
+    <td align="center" width="25%">
       <a href="https://github.com/gauravraj11">
-                <img src="https://images.weserv.nl/?url=github.com/gauravraj11.png&h=150&w=150&fit=cover&mask=circle&maxage=7d" alt="Rahul Yadav"/>
+        <img src="https://images.weserv.nl/?url=github.com/gauravraj11.png&h=100&w=100&fit=cover&mask=circle&maxage=7d" alt="Gaurav Raj"/>
       </a>
       <br />
       <h3>Gaurav Raj</h3>
     </td>
   </tr>
 </table>
+
 </div>
 
-## 🎯 About CareerCompass
+## About CareerCompass
 
-**CareerCompass** is an intelligent web-based platform designed to solve the critical challenge of career planning and skill development in the rapidly evolving technology landscape. It combines cutting-edge AI/ML technologies to provide:
+In today's fast-paced tech industry, students and professionals struggle to navigate countless career paths and stay relevant. We built CareerCompass as your personal AI-powered career advisor that understands both where you are and where you want to be.
 
-- 🗺️ **Personalized Learning Roadmaps** - AI-generated, week-by-week study plans tailored to your goals
-- 📄 **Intelligent Resume Analysis** - Multi-model ML pipeline providing ATS scores, skill gaps, and salary predictions
-- 🏢 **Placement Insights** - Company-wise interview experiences and salary trends
-- 📈 **Progress Tracking** - Monitor your learning journey with visual progress indicators
+### What We Offer
 
-### Problem Statement
+**Personalized Learning Roadmaps**  
+Our AI creates week-by-week study plans tailored to your skills, available time, and career goals—no more generic recommendations.
 
-The absence of personalized, AI-driven career guidance tools that can simultaneously generate structured learning roadmaps and provide comprehensive resume analysis with actionable insights.
+**Intelligent Resume Analysis**  
+Get genuine insights on ATS compatibility, skill gaps, and realistic salary expectations through our multi-model machine learning pipeline.
 
-### Solution
+**Real Placement Insights**  
+Access authentic interview experiences, company-specific questions, and salary data from real students and professionals.
 
-CareerCompass integrates multiple pre-trained AI models (Google Gemini 2.5, spaCy NER, Sentence-BERT) in a unified platform, offering both diagnostic (resume analysis) and prescriptive (roadmap generation) career guidance.
+**Progress Tracking**  
+Stay motivated with visual tracking of your learning journey.
 
----
+### The Problem We're Solving
+
+Career planning today feels overwhelming. Endless online resources exist, but there's no clear guidance on what matters for your specific goals. Traditional counseling lacks personalization and real-time data.
+
+### Our Approach
+
+CareerCompass combines three powerful AI technologies—Google Gemini, spaCy, and Sentence-BERT—into one cohesive platform that offers both diagnosis (where you stand) and prescription (what to do next). Clear, actionable guidance backed by artificial intelligence and real student data.
 
 ## 🛠️ Tech Stack
 
