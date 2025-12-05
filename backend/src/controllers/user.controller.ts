@@ -68,6 +68,34 @@ export const getUserByClerkId = async (
   }
 };
 
+// ADD THIS FUNCTION WITH EXPORT
+export const getUserStats = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { clerkId } = req.params;
+
+    if (!clerkId) {
+      sendError(res, "clerkId is required", 400);
+      return;
+    }
+
+    const stats = await userService.getUserStats(clerkId);
+
+    if (!stats) {
+      sendError(res, "User not found", 404);
+      return;
+    }
+
+    sendSuccess(res, stats, "User stats retrieved successfully");
+  } catch (error: any) {
+    console.error("Get user stats error:", error);
+    next(error);
+  }
+};
+
 export const deleteUser = async (
   req: Request,
   res: Response,
