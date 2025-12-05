@@ -155,7 +155,7 @@ class UserService {
         description: `${exp.role} • ${exp.outcome} • ${new Date(
           exp.createdAt
         ).toLocaleDateString()}`,
-        link: "/dashboard/interview-questions",
+        link: `/dashboard/companies/experiences/${exp.id}`,
         iconColor: "bg-yellow-400/10",
         date: exp.createdAt,
       });
