@@ -167,61 +167,47 @@ npm install
 ```
 
 ### 5. Create `.env`:
-
-#### Database
-
+```sh
+#Database
 DATABASE_URL="postgresql://username:password@localhost:5432/careercompass"
-
-#### Server
-
+#Server
 PORT=5000
 NODE_ENV=development
-
-#### Clerk
-
+#Clerk
 CLERK_SECRET_KEY=sk_test_your_secret_here
-
-#### Google Gemini API
-
+#Google Gemini API
 GEMINI_API_KEY=your_gemini_api_key_here
+```
 
 ### 6. Setup Database
-
-#### Generate Prisma Client
-
+```sh
+#Generate Prisma Client
 npx prisma generate
-
-#### Run migrations
-
+#Run migrations
 npx prisma migrate dev --name init
 
-#### (Optional) Seed database
-
+#(Optional) Seed database
 npx prisma db seed
+```
 
 ### 7. Setup ML Service
-
+```sh
 cd ../ml-service
 python -m venv venv
 
-#### Activate virtual environment
-
-#### Windows:
-
+#Activate virtual environment
+#Windows:
 venv\Scripts\activate
-
-#### macOS/Linux:
-
+#macOS/Linux:
 source venv/bin/activate
-
-#### Install dependencies
-
+#Install dependencies
 pip install -r requirements.txt
+```
 
 ### 8. Create `.env`:
-
+```sh
 GEMINI_API_KEY=your_gemini_api_key_here
-
+```
 ---
 
 ## 🎮 Usage
