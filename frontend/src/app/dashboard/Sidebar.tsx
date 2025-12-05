@@ -26,8 +26,8 @@ export default function Sidebar() {
         { name: 'Resume Analysis', href: '/dashboard/resume-analyze', icon: Upload },
         { name: 'Career Paths', href: '/dashboard/careerPaths', icon: TrendingUp },
         { name: 'Placement Insights', href: '/dashboard/companies', icon: Building2 },
-        { name: 'Assessments', href: '/dashboard/assessments', icon: ClipboardCheck },
-        { name: 'Profile', href: '/dashboard/profile', icon: User },
+        // { name: 'Assessments', href: '/dashboard/assessments', icon: ClipboardCheck },
+        // { name: 'Profile', href: '/dashboard/profile', icon: User },
     ];
 
     return (
@@ -69,13 +69,13 @@ export default function Sidebar() {
 
             {/* Bottom Actions */}
             <div className="p-4 border-t border-white/10 space-y-1">
-                <Link
+                {/* <Link
                     href="/dashboard/settings"
                     className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/70 hover:bg-white/5 hover:text-white transition-all"
                 >
                     <Settings className="w-5 h-5" />
                     <span className="font-medium">Settings</span>
-                </Link>
+                </Link> */}
 
                 <button
                     onClick={() => signOut()}

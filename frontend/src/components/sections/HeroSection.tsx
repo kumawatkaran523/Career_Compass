@@ -53,7 +53,7 @@ export default function HeroSection() {
                         </div>
 
                         {/* CTA Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-4">
+                        {/* <div className="flex flex-col sm:flex-row gap-4">
                             <Link
                                 href="/signup"
                                 className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary hover:bg-primary-600 text-white font-medium rounded-lg transition-all hover:scale-105 active:scale-95"
@@ -67,7 +67,7 @@ export default function HeroSection() {
                             >
                                 Watch Demo
                             </Link>
-                        </div>
+                        </div> */}
                     </motion.div>
 
                     {/* Right Content - Dashboard Preview */}
