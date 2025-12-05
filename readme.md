@@ -1,4 +1,4 @@
-# 🧭 CareerCompass
+# CareerCompass
 
 <div align="center">
 
