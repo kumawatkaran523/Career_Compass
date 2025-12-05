@@ -63,7 +63,7 @@ export default function RoadmapViewPage() {
     const loadProgressFromDatabase = async (userId: string, roadmapId: string) => {
         try {
             const response = await fetch(
-                `http://localhost:5000/api/roadmap/progress/${userId}/${roadmapId}`
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/roadmap/progress/${userId}/${roadmapId}`
             );
 
             if (response.ok) {
@@ -107,7 +107,7 @@ export default function RoadmapViewPage() {
 
         if (dbUserId && roadmapId) {
             try {
-                const response = await fetch('http://localhost:5000/api/roadmap/progress', {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/roadmap/progress`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

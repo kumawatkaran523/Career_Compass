@@ -34,7 +34,7 @@ export default function AnalyzePage() {
 
             setLoadingAnalyses(true);
             try {
-                const response = await fetch(`http://localhost:5000/api/analysis/user/${dbUserId}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/analysis/user/${dbUserId}`);
                 if (response.ok) {
                     const data = await response.json();
                     setSavedAnalyses(data.data || []);
@@ -98,7 +98,7 @@ export default function AnalyzePage() {
             const formData = new FormData();
             formData.append('file', file);
 
-            const response = await fetch('http://localhost:8000/analyze-resume', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_ML_URL}/analyze-resume`, { 
                 method: 'POST',
                 body: formData,
             });
@@ -129,7 +129,7 @@ export default function AnalyzePage() {
             }
 
             const response = await fetch(
-                `http://localhost:5000/api/analysis/${analysisId}/view`,
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/analysis/${analysisId}/view`,
                 {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -183,7 +183,7 @@ export default function AnalyzePage() {
 
         try {
             const dbUserId = localStorage.getItem('dbUserId');
-            const response = await fetch(`http://localhost:5000/api/analysis/${analysisId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/analysis/${analysisId}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: dbUserId }),
