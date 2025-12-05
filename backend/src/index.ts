@@ -11,11 +11,20 @@ import questionRoutes from "./routes/question.routes";
 import { errorHandler } from "./middleware/error.middleware";
 
 dotenv.config();
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://career-compass-taupe.vercel.app", 
+];
 
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Routes
